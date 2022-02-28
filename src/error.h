@@ -20,6 +20,10 @@ void Print_Expected_Symbol_Message(int lineNumber, int expectedSymbol);
 
 void Print_Invalid_Identifier_Message(int lineNumber, char* identifier, char* causeOfError);
 
+void Print_Illegal_Redefinition_Message(int lineNumber, char* identifier);
+
+void Print_Undefined_Variable_Message(int lineNumber, char* identifier);
+
 void Exit_Program_Due_To_Error();
 
 #endif

@@ -41,23 +41,16 @@ int Lexan() {
             ungetc(currChar, programFile);
             char* idLexeme = Extract_Id_Lexeme();
             int type = Lookup_Symbol_Table_Type(idLexeme);
+            // printf("idLexeme = %s, %i\n", idLexeme, type);
             if(type == NOT_FOUND) {
                 if(!Is_Valid_Id(idLexeme)) {
                     free(idLexeme);
                     Deactivate_Lexer();
                     Exit_Program_Due_To_Error();
-                }
-                else type = ID;
+                } else type = ID;
             }
-            else if (type == END) {
-                free(idLexeme);
-                Deactivate_Lexer();
-            }
-            else {
-                strcpy(extractedIdLexeme, idLexeme);
-                free(idLexeme);
-                return type;
-            }
+            extractedIdLexeme = idLexeme;
+            return type;
         }
         else if(currChar == EOF) {
             return DONE;

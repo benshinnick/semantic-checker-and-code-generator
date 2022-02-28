@@ -7,10 +7,12 @@
 #include "parser.h"
 
 void Parse_Program() {
+    indecles = true;
     lookahead = Lexan();
     Match(BEGIN);
     while(lookahead != END) {
-        Parse_Assignment_Statement();
+        if(indecles) Parse_Declaration_Statement();
+        else Parse_Assignment_Statement();
     }
     lookahead = Lexan();
     Match('.');
@@ -20,10 +22,17 @@ void Parse_Program() {
 }
 
 void Parse_Declaration_Statement() {
-    Match(INT);
-    Match(ID);
-    Check_Declaration_Id();
-    Match(';');
+    if(lookahead != ID) {
+        Match(INT);
+        Match(ID);
+        Check_Declaration_Id();
+        while(lookahead == ',') {
+            Match(',');
+            Match(ID);
+            Check_Declaration_Id();
+        }
+        Match(';');
+    } else indecles = false;
 }
 
 void Parse_Assignment_Statement() {
@@ -77,11 +86,21 @@ void Match(int type) {
 }
 
 void Check_Declaration_Id() {
-    // Use LexicalAnalyzer's extractedIdLexeme
+    if(Lookup_Symbol_Table_Type(extractedIdLexeme) == NOT_FOUND) {
+        Add_Table_Entry(extractedIdLexeme, ID);
+    } else {
+        free(extractedIdLexeme);
+        Print_Illegal_Redefinition_Message(lineNumber, extractedIdLexeme);
+        Exit_Program_Due_To_Error();
+    }
 }
 
 void Check_Assignment_Statement_Id() {
-    // Use LexicalAnalyzer's extractedIdLexeme
+    if(Lookup_Symbol_Table_Type(extractedIdLexeme) == NOT_FOUND) {
+        Print_Undefined_Variable_Message(lineNumber, extractedIdLexeme);
+        Exit_Program_Due_To_Error();
+    }
+    else free(extractedIdLexeme);
 }
 
 void Print_Found_Identifiers() {

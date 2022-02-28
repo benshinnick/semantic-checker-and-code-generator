@@ -29,6 +29,14 @@ void Print_Invalid_Identifier_Message(int lineNumber, char* identifier, char* ca
     }
 }
 
+void Print_Illegal_Redefinition_Message(int lineNumber, char* identifier) {
+    printf("line %i: illegal redefinition of identifier \'%s\'\n", lineNumber, identifier); 
+}
+
+void Print_Undefined_Variable_Message(int lineNumber, char* identifier) {
+    printf("line %i: undefined variable \'%s\'\n", lineNumber, identifier);
+}
+
 void Exit_Program_Due_To_Error() {
     printf("failed to parse\n\n");
     exit(0);
