@@ -21,6 +21,7 @@
 
 int lookahead;
 int lineNumber;
+char* extractedIdLexeme;
 FILE* programFile;
 
 void Initialize_Lexer(char* programFileName);

@@ -19,8 +19,16 @@ void Parse_Program() {
     Print_Found_Identifiers();
 }
 
+void Parse_Declaration_Statement() {
+    Match(INT);
+    Match(ID);
+    Check_Declaration_Id();
+    Match(';');
+}
+
 void Parse_Assignment_Statement() {
     Match(ID);
+    Check_Assignment_Statement_Id();
     if(lookahead != '=') {
         Print_Expected_Symbol_Message(lineNumber, '=');
         Deactivate_Lexer();
@@ -66,6 +74,14 @@ void Match(int type) {
         Deactivate_Lexer();
         Exit_Program_Due_To_Error();
     }
+}
+
+void Check_Declaration_Id() {
+    // Use LexicalAnalyzer's extractedIdLexeme
+}
+
+void Check_Assignment_Statement_Id() {
+    // Use LexicalAnalyzer's extractedIdLexeme
 }
 
 void Print_Found_Identifiers() {

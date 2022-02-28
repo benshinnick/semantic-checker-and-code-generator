@@ -16,7 +16,11 @@
 #include "lexical-analyzer.h"
 #include "error.h"
 
+bool indecles;
+
 void Parse_Program();
+
+void Parse_Declaration_Statement();
 
 void Parse_Assignment_Statement();
 
@@ -27,6 +31,10 @@ void Parse_Term();
 void Parse_Factor();
 
 void Match(int type);
+
+void Check_Declaration_Id();
+
+void Check_Assignment_Statement_Id();
 
 void Print_Found_Identifiers();
 

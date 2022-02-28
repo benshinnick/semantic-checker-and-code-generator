@@ -57,6 +57,7 @@ int Lookup_Symbol_Table_Type(char* idLexeme) {
     int strcmpEquals = 0;
     if(strcmp(idLexeme, "begin") == strcmpEquals) return BEGIN;
     else if(strcmp(idLexeme, "end") == strcmpEquals) return END;
+    else if(strcmp(idLexeme, "int") == strcmpEquals) return INT;
     else if(Contains_Table_Entry(idLexeme)) return ID;
     else return NOT_FOUND;
 }
