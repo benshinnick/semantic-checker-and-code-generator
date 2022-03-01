@@ -9,12 +9,20 @@
 void Initialize_Lexer(char* programFileName) {
     if(programFileName == NULL) return;
 
-    char programFilePath[INPUT_FILE_PATH_MAX_CHAR_LENGTH] = "";
+    char programFilePath[FILE_PATH_MAX_CHAR_LENGTH] = "";
     strcat(programFilePath, INPUT_FILES_DIRECTORY);
     strcat(programFilePath, programFileName);
+    strcat(programFilePath, ".in");
+
+    char codeOutputFilePath[FILE_PATH_MAX_CHAR_LENGTH] = "";
+    strcat(codeOutputFilePath, OUTPUT_FILES_DIRECTORY);
+    strcat(codeOutputFilePath, programFileName);
+    strcat(codeOutputFilePath, ".out");
 
     Initialize_Symbol_Table();
     programFile = fopen(programFilePath, "r");
+    codeOutputFile = fopen(codeOutputFilePath, "w");
+
     lookahead = -999;
     lineNumber = 1;
     extractedIdLexeme = NULL;

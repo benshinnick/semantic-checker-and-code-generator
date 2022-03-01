@@ -17,12 +17,15 @@
 #include "error.h"
 
 #define INPUT_FILES_DIRECTORY "input-files/"
-#define INPUT_FILE_PATH_MAX_CHAR_LENGTH 50
+#define OUTPUT_FILES_DIRECTORY "output-files/"
+#define FILE_PATH_MAX_CHAR_LENGTH 50
 
 int lookahead;
 int lineNumber;
 char* extractedIdLexeme;
+
 FILE* programFile;
+FILE* codeOutputFile;
 
 void Initialize_Lexer(char* programFileName);
 
