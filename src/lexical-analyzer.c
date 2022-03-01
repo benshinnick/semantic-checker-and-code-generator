@@ -49,6 +49,9 @@ int Lexan() {
                     Exit_Program_Due_To_Error();
                 } else type = ID;
             }
+            if(type == BEGIN || type == END || type == INT) {
+                free(idLexeme);
+            }
             extractedIdLexeme = idLexeme;
             return type;
         }
