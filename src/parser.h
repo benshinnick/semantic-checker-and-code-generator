@@ -16,7 +16,13 @@
 #include "lexical-analyzer.h"
 #include "error.h"
 
+#define OUTPUT_FILES_DIRECTORY "output-files/"
+#define OUTPUT_FILE_PATH_MAX_CHAR_LENGTH 50
+
 bool indecles;
+FILE* codeOutputFile;
+
+void Initialize_Parser(char* programFileName);
 
 void Parse_Program();
 
@@ -37,5 +43,7 @@ void Check_Declaration_Id();
 void Check_Assignment_Statement_Id();
 
 void Print_Found_Identifiers();
+
+void Deactivate_Parser();
 
 #endif

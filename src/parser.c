@@ -6,6 +6,19 @@
 
 #include "parser.h"
 
+void Initialize_Parser(char* programFileName) {
+    if(programFileName == NULL) return;
+    Initialize_Lexer(programFileName);
+
+    char codeOutputFilePath[OUTPUT_FILE_PATH_MAX_CHAR_LENGTH] = "";
+    strcat(codeOutputFilePath, OUTPUT_FILES_DIRECTORY);
+    strcat(codeOutputFilePath, programFileName);
+    strcat(codeOutputFilePath, ".out");
+
+    codeOutputFile = fopen(codeOutputFilePath, "w");
+    fputs("Hello All", codeOutputFile);
+}
+
 void Parse_Program() {
     indecles = true;
     lookahead = Lexan();
@@ -112,4 +125,9 @@ void Print_Found_Identifiers() {
         else printf("%s, ", allIds[i]);
     }
     free(allIds);
+}
+
+void Deactivate_Parser() {
+    if(codeOutputFile != NULL) fclose(codeOutputFile);
+    Deactivate_Lexer();
 }

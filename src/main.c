@@ -10,9 +10,9 @@ int main(int argc, char *argv[]) {
     if(argv[1] == NULL) { printf("no program file provided\n"); return 0; }
     else printf("compiling %s\n", argv[1]);
 
-    Initialize_Lexer(argv[1]);
+    Initialize_Parser(argv[1]);
     Parse_Program();
-    Deactivate_Lexer();
+    Deactivate_Parser();
     
     return 0;
 }
