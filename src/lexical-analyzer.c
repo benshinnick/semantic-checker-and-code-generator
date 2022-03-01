@@ -17,6 +17,7 @@ void Initialize_Lexer(char* programFileName) {
     programFile = fopen(programFilePath, "r");
     lookahead = -999;
     lineNumber = 1;
+    extractedIdLexeme = NULL;
 }
 
 int Lexan() {
@@ -40,21 +41,18 @@ int Lexan() {
             ungetc(currChar, programFile);
             char* idLexeme = Extract_Id_Lexeme();
             int type = Lookup_Symbol_Table_Type(idLexeme);
+            // printf("idLexeme = %s, %i\n", idLexeme, type);
             if(type == NOT_FOUND) {
-                if(Is_Valid_Id(idLexeme)) {
-                    Add_Table_Entry(idLexeme, ID);
-                }
-                else { 
+                if(!Is_Valid_Id(idLexeme)) {
                     free(idLexeme);
                     Deactivate_Lexer();
                     Exit_Program_Due_To_Error();
-                }
-                return ID;
+                } else type = ID;
             }
-            else {
+            if(type == BEGIN || type == END || type == INT) {
                 free(idLexeme);
-                return type;
-            }
+            } else extractedIdLexeme = idLexeme;
+            return type;
         }
         else if(currChar == EOF) {
             return DONE;

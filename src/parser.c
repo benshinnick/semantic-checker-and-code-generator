@@ -7,10 +7,12 @@
 #include "parser.h"
 
 void Parse_Program() {
+    indecles = true;
     lookahead = Lexan();
     Match(BEGIN);
     while(lookahead != END) {
-        Parse_Assignment_Statement();
+        if(indecles) Parse_Declaration_Statement();
+        else Parse_Assignment_Statement();
     }
     lookahead = Lexan();
     Match('.');
@@ -19,8 +21,23 @@ void Parse_Program() {
     Print_Found_Identifiers();
 }
 
+void Parse_Declaration_Statement() {
+    if(lookahead != ID) {
+        Match(INT);
+        Match(ID);
+        Check_Declaration_Id();
+        while(lookahead == ',') {
+            Match(',');
+            Match(ID);
+            Check_Declaration_Id();
+        }
+        Match(';');
+    } else indecles = false;
+}
+
 void Parse_Assignment_Statement() {
     Match(ID);
+    Check_Assignment_Statement_Id();
     if(lookahead != '=') {
         Print_Expected_Symbol_Message(lineNumber, '=');
         Deactivate_Lexer();
@@ -66,6 +83,25 @@ void Match(int type) {
         Deactivate_Lexer();
         Exit_Program_Due_To_Error();
     }
+}
+
+void Check_Declaration_Id() {
+    if(Lookup_Symbol_Table_Type(extractedIdLexeme) == NOT_FOUND) {
+        Add_Table_Entry(extractedIdLexeme, ID);
+    } else {
+        Print_Illegal_Redefinition_Message(lineNumber, extractedIdLexeme);
+        free(extractedIdLexeme);
+        Exit_Program_Due_To_Error();
+    }
+}
+
+void Check_Assignment_Statement_Id() {
+    if(Lookup_Symbol_Table_Type(extractedIdLexeme) == NOT_FOUND) {
+        Print_Undefined_Variable_Message(lineNumber, extractedIdLexeme);
+        free(extractedIdLexeme);
+        Exit_Program_Due_To_Error();
+    }
+    else free(extractedIdLexeme);
 }
 
 void Print_Found_Identifiers() {

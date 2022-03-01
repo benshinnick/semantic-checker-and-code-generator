@@ -10,6 +10,7 @@
 
 #define ID 300
 #define NUM 301
+#define INT 302
 #define BEGIN 400
 #define END 401
 #define DONE 0
