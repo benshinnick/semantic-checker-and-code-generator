@@ -50,24 +50,24 @@ void Parse_Assignment_Statement() {
 }
 
 void Parse_Expression() {
-    Parse_Term();
-    while(lookahead == '+' || lookahead == '-') {
+    Parse_Term(); // gets first operand
+    while(lookahead == '+' || lookahead == '-') { // gets operator
         Match(lookahead);
-        Parse_Term();
+        Parse_Term(); // gets second operand
     }
 }
 
 void Parse_Term() {
-    Parse_Factor();
-    while(lookahead == '*' || lookahead == '/') {
+    Parse_Factor(); // gets first operand
+    while(lookahead == '*' || lookahead == '/') { // gets operator
         Match(lookahead);
-        Parse_Factor();
+        Parse_Factor(); // gets second operand
     }
 }
 
 void Parse_Factor() {
-    if(lookahead == ID) Match(ID);
-    if(lookahead == NUM) Match(NUM);
+    if(lookahead == ID) Match(ID); // put into register
+    if(lookahead == NUM) Match(NUM); // put into register
     else if(lookahead == '(') {
         Match('(');
         Parse_Expression();
