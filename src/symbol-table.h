@@ -18,7 +18,7 @@
 #include "type-constants.h"
 
 #define SYMBOL_TABLE_SIZE 100
-#define MAX_ID_CHAR_SIZE 80
+#define MAX_ID_CHAR_SIZE 50
 
 typedef struct TableEntry {
     char* value;

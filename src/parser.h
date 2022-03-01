@@ -18,8 +18,15 @@
 
 #define OUTPUT_FILES_DIRECTORY "output-files/"
 #define OUTPUT_FILE_PATH_MAX_CHAR_LENGTH 50
+#define MAX_POSTFIX_ITEMS 25
 
 bool indecles;
+int registerCount;
+
+char* assignmentStatementId;
+char** postfixContainer;
+int numOfItemsInPostfixContainer;
+
 FILE* codeOutputFile;
 
 void Initialize_Parser(char* programFileName);
@@ -43,6 +50,8 @@ void Check_Declaration_Id();
 void Check_Assignment_Statement_Id();
 
 void Print_Found_Identifiers();
+
+void Clear_Postfix_Container();
 
 void Deactivate_Parser();
 

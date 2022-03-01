@@ -14,8 +14,11 @@ void Initialize_Parser(char* programFileName) {
     strcat(codeOutputFilePath, OUTPUT_FILES_DIRECTORY);
     strcat(codeOutputFilePath, programFileName);
     strcat(codeOutputFilePath, ".out");
-
     codeOutputFile = fopen(codeOutputFilePath, "w");
+
+    registerCount = -999;
+    int numOfItemsInPostfixContainer = 0;
+    postfixContainer = malloc(MAX_POSTFIX_ITEMS *  MAX_ID_CHAR_SIZE * sizeof(char));
     fputs("Hello All", codeOutputFile);
 }
 
@@ -25,7 +28,11 @@ void Parse_Program() {
     Match(BEGIN);
     while(lookahead != END) {
         if(indecles) Parse_Declaration_Statement();
-        else Parse_Assignment_Statement();
+        else {
+            Clear_Postfix_Container();
+            Parse_Assignment_Statement();
+            free(assignmentStatementId);
+        }
     }
     lookahead = Lexan();
     Match('.');
@@ -79,8 +86,14 @@ void Parse_Term() {
 }
 
 void Parse_Factor() {
-    if(lookahead == ID) Match(ID); // put into register
-    if(lookahead == NUM) Match(NUM); // put into register
+    if(lookahead == ID) {
+        Match(ID);
+        // put into register
+    }
+    if(lookahead == NUM) {
+        Match(NUM);
+        // put into register
+    }
     else if(lookahead == '(') {
         Match('(');
         Parse_Expression();
@@ -114,7 +127,7 @@ void Check_Assignment_Statement_Id() {
         free(extractedIdLexeme);
         Exit_Program_Due_To_Error();
     }
-    else free(extractedIdLexeme);
+    else assignmentStatementId = extractedIdLexeme;;
 }
 
 void Print_Found_Identifiers() {
@@ -127,7 +140,16 @@ void Print_Found_Identifiers() {
     free(allIds);
 }
 
+void Clear_Postfix_Container() {
+    for(int i = 0; i < numOfItemsInPostfixContainer; ++i) {
+        free(postfixContainer[i]);
+    }
+    numOfItemsInPostfixContainer = 0;
+}
+
 void Deactivate_Parser() {
     if(codeOutputFile != NULL) fclose(codeOutputFile);
+    Clear_Postfix_Container();
+    free(postfixContainer);
     Deactivate_Lexer();
 }
