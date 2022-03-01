@@ -18,6 +18,7 @@ void Initialize_Lexer(char* programFileName) {
     lookahead = -999;
     lineNumber = 1;
     extractedIdLexeme = NULL;
+    extractedNumLexeme = -999;
 
     Initialize_Symbol_Table();
 }
@@ -37,6 +38,7 @@ int Lexan() {
         else if(isdigit(currChar)) {
             ungetc(currChar, programFile);
             int numLexeme = Extract_Num_Lexeme();
+            extractedNumLexeme = numLexeme;
             return NUM;
         }
         else if(isalpha(currChar)) {

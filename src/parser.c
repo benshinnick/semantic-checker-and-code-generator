@@ -17,9 +17,9 @@ void Initialize_Parser(char* programFileName) {
     codeOutputFile = fopen(codeOutputFilePath, "w");
 
     registerCount = -999;
-    int numOfItemsInPostfixContainer = 0;
+    int numOfItemsInPostfixContainer = -999;
     postfixContainer = malloc(MAX_POSTFIX_ITEMS *  MAX_ID_CHAR_SIZE * sizeof(char));
-    fputs("Hello All", codeOutputFile);
+    fprintf(codeOutputFile, "Compiling %s.in\n", programFileName);
 }
 
 void Parse_Program() {
@@ -29,9 +29,10 @@ void Parse_Program() {
     while(lookahead != END) {
         if(indecles) Parse_Declaration_Statement();
         else {
-            Clear_Postfix_Container();
+            Reset_Postfix_Container_And_Register_Count();
             Parse_Assignment_Statement();
-            free(assignmentStatementId);
+            Ouput_Variable_Register_Assignment_To_File();
+            Output_Postfix_Expression_To_File();
         }
     }
     lookahead = Lexan();
@@ -71,30 +72,32 @@ void Parse_Assignment_Statement() {
 
 void Parse_Expression() {
     Parse_Term(); // gets first operand
-    while(lookahead == '+' || lookahead == '-') { // gets operator
+    while(lookahead == '+' || lookahead == '-') {
+        char operator = lookahead;
         Match(lookahead);
         Parse_Term(); // gets second operand
+        Output_Register_Operation_To_File(operator);  // gets operator
     }
 }
 
 void Parse_Term() {
     Parse_Factor(); // gets first operand
-    while(lookahead == '*' || lookahead == '/') { // gets operator
+    while(lookahead == '*' || lookahead == '/') {
+        char operator = lookahead;
         Match(lookahead);
         Parse_Factor(); // gets second operand
+        Output_Register_Operation_To_File(operator); // gets operator
     }
 }
 
 void Parse_Factor() {
     if(lookahead == ID) {
+        Output_Register_Item_To_File(ID);
         Match(ID);
-        // put into register
-    }
-    if(lookahead == NUM) {
+    } if(lookahead == NUM) {
+        Output_Register_Item_To_File(NUM);
         Match(NUM);
-        // put into register
-    }
-    else if(lookahead == '(') {
+    } else if(lookahead == '(') {
         Match('(');
         Parse_Expression();
         Match(')');
@@ -140,16 +143,54 @@ void Print_Found_Identifiers() {
     free(allIds);
 }
 
-void Clear_Postfix_Container() {
+void Output_Register_Item_To_File(int type) {
+    registerCount++;
+    if(type == ID) {
+        fprintf(codeOutputFile, "R%i = %s\n", registerCount, extractedIdLexeme);
+        postfixContainer[numOfItemsInPostfixContainer++] = extractedIdLexeme;
+    } else if (type == NUM) {
+        fprintf(codeOutputFile, "R%i = %i\n", registerCount, extractedNumLexeme);
+        char* strExtractedNumLexeme = malloc(sizeof(char) * MAX_ID_CHAR_SIZE);
+        sprintf(strExtractedNumLexeme, "%i", extractedNumLexeme);
+        postfixContainer[numOfItemsInPostfixContainer++] = strExtractedNumLexeme;
+    }
+}
+
+void Output_Register_Operation_To_File(char operator) {
+    registerCount--;
+    int firstRegister = registerCount;
+    int secondRegister = registerCount + 1;
+    fprintf(codeOutputFile, "R%i = R%i %c R%i\n", firstRegister, firstRegister, operator, secondRegister);
+    char* strOperator = malloc(sizeof(char));
+    strOperator[0] = operator;
+    postfixContainer[numOfItemsInPostfixContainer++] = strOperator;
+}
+
+void Ouput_Variable_Register_Assignment_To_File() {
+    fprintf(codeOutputFile, "%s = R%i\n", assignmentStatementId, registerCount);
+    free(assignmentStatementId);
+}
+
+void Output_Postfix_Expression_To_File() {
+    fputs("*****[", codeOutputFile);
+    for(int i = 0; i < numOfItemsInPostfixContainer; ++i) {
+       fputs(postfixContainer[i], codeOutputFile);
+       if(i != numOfItemsInPostfixContainer - 1) fputc(',', codeOutputFile);
+    }
+    fputs("]*****\n", codeOutputFile);
+}
+
+void Reset_Postfix_Container_And_Register_Count() {
     for(int i = 0; i < numOfItemsInPostfixContainer; ++i) {
         free(postfixContainer[i]);
     }
     numOfItemsInPostfixContainer = 0;
+    registerCount = -1;
 }
 
 void Deactivate_Parser() {
     if(codeOutputFile != NULL) fclose(codeOutputFile);
-    Clear_Postfix_Container();
+    Reset_Postfix_Container_And_Register_Count();
     free(postfixContainer);
     Deactivate_Lexer();
 }

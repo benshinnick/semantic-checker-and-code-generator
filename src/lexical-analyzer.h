@@ -22,6 +22,7 @@
 int lookahead;
 int lineNumber;
 char* extractedIdLexeme;
+int extractedNumLexeme;
 
 FILE* programFile;
 

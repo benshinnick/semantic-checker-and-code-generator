@@ -5,7 +5,9 @@
     Description:
      Contains functions responsible
      for parsing programs and throwing
-     syntax errors if they exist
+     syntax and semantic errors if they
+     exist. Also generates register based
+     code output files.
 */
 
 #ifndef PARSER_H
@@ -51,7 +53,15 @@ void Check_Assignment_Statement_Id();
 
 void Print_Found_Identifiers();
 
-void Clear_Postfix_Container();
+void Output_Register_Item_To_File(int type);
+
+void Output_Register_Operation_To_File(char operator);
+
+void Ouput_Variable_Register_Assignment_To_File();
+
+void Output_Postfix_Expression_To_File();
+
+void Reset_Postfix_Container_And_Register_Count();
 
 void Deactivate_Parser();
 
