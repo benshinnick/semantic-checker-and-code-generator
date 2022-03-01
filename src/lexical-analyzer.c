@@ -51,8 +51,7 @@ int Lexan() {
             }
             if(type == BEGIN || type == END || type == INT) {
                 free(idLexeme);
-            }
-            extractedIdLexeme = idLexeme;
+            } else extractedIdLexeme = idLexeme;
             return type;
         }
         else if(currChar == EOF) {
