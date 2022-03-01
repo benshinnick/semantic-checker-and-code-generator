@@ -89,16 +89,16 @@ void Check_Declaration_Id() {
     if(Lookup_Symbol_Table_Type(extractedIdLexeme) == NOT_FOUND) {
         Add_Table_Entry(extractedIdLexeme, ID);
     } else {
-        free(extractedIdLexeme);
         Print_Illegal_Redefinition_Message(lineNumber, extractedIdLexeme);
+        free(extractedIdLexeme);
         Exit_Program_Due_To_Error();
     }
 }
 
 void Check_Assignment_Statement_Id() {
     if(Lookup_Symbol_Table_Type(extractedIdLexeme) == NOT_FOUND) {
-        free(extractedIdLexeme);
         Print_Undefined_Variable_Message(lineNumber, extractedIdLexeme);
+        free(extractedIdLexeme);
         Exit_Program_Due_To_Error();
     }
     else free(extractedIdLexeme);
