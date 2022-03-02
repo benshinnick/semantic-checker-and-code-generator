@@ -133,10 +133,8 @@ void Print_Found_Identifiers() {
 
 void Deactivate_Parser_Due_To_Error() {
     Write_Illegal_Program_Message_To_Output_File();
-    if(codeOutputFile != NULL) fclose(codeOutputFile);
-    Reset_Postfix_Container_And_Register_Count();
-    free(postfixContainer);
     Deactivate_Lexer();
+    Deactivate_Code_Generator();
     Exit_Program_Due_To_Error();
 }
 
