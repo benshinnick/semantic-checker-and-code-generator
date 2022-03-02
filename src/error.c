@@ -34,7 +34,7 @@ void Print_Illegal_Redefinition_Message(int lineNumber, char* identifier) {
 }
 
 void Print_Undefined_Variable_Message(int lineNumber, char* identifier) {
-    printf("line %i: undefined variable \'%s\'\n", lineNumber, identifier);
+    printf("line %i: variable \'%s\' is undefined\n", lineNumber, identifier);
 }
 
 void Exit_Program_Due_To_Error() {

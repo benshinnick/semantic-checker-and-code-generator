@@ -9,21 +9,12 @@
 void Initialize_Parser(char* programFileName) {
     if(programFileName == NULL) return;
     Initialize_Lexer(programFileName);
+    Initialize_Code_Generator(programFileName);
 
-    char codeOutputFilePath[OUTPUT_FILE_PATH_MAX_CHAR_LENGTH] = "";
-    strcat(codeOutputFilePath, OUTPUT_FILES_DIRECTORY);
-    strcat(codeOutputFilePath, programFileName);
-    strcat(codeOutputFilePath, ".out");
-    codeOutputFile = fopen(codeOutputFilePath, "w");
-
-    registerCount = -999;
-    int numOfItemsInPostfixContainer = -999;
-    postfixContainer = malloc(MAX_POSTFIX_ITEMS *  MAX_ID_CHAR_SIZE * sizeof(char));
-    fprintf(codeOutputFile, "Compiling %s.in\n", programFileName);
+    indecles = true;
 }
 
 void Parse_Program() {
-    indecles = true;
     lookahead = Lexan();
     Match(BEGIN);
     while(lookahead != END) {
@@ -91,10 +82,10 @@ void Parse_Term() {
 
 void Parse_Factor() {
     if(lookahead == ID) {
-        Output_Register_Item_To_File(ID);
+        Output_Register_Identifier_Assignment_To_File(extractedIdLexeme);
         Match(ID);
     } if(lookahead == NUM) {
-        Output_Register_Item_To_File(NUM);
+        Output_Register_Number_Assignment_To_File(extractedNumLexeme);
         Match(NUM);
     } else if(lookahead == '(') {
         Match('(');
@@ -127,7 +118,7 @@ void Check_Assignment_Statement_Id() {
         Print_Undefined_Variable_Message(lineNumber, extractedIdLexeme);
         Deactivate_Parser_Due_To_Error();
     }
-    else assignmentStatementId = extractedIdLexeme;;
+    else assignmentStatementId = extractedIdLexeme;
 }
 
 void Print_Found_Identifiers() {
@@ -140,56 +131,6 @@ void Print_Found_Identifiers() {
     free(allIds);
 }
 
-void Output_Register_Item_To_File(int type) {
-    registerCount++;
-    if(type == ID) {
-        fprintf(codeOutputFile, "R%i = %s\n", registerCount, extractedIdLexeme);
-        postfixContainer[numOfItemsInPostfixContainer++] = extractedIdLexeme;
-    } else if (type == NUM) {
-        fprintf(codeOutputFile, "R%i = %i\n", registerCount, extractedNumLexeme);
-        char* strExtractedNumLexeme = malloc(sizeof(char) * MAX_ID_CHAR_SIZE);
-        sprintf(strExtractedNumLexeme, "%i", extractedNumLexeme);
-        postfixContainer[numOfItemsInPostfixContainer++] = strExtractedNumLexeme;
-    }
-}
-
-void Output_Register_Operation_To_File(char operator) {
-    registerCount--;
-    int firstRegister = registerCount;
-    int secondRegister = registerCount + 1;
-    fprintf(codeOutputFile, "R%i = R%i %c R%i\n", firstRegister, firstRegister, operator, secondRegister);
-    char* strOperator = malloc(sizeof(char));
-    strOperator[0] = operator;
-    postfixContainer[numOfItemsInPostfixContainer++] = strOperator;
-}
-
-void Ouput_Variable_Register_Assignment_To_File() {
-    fprintf(codeOutputFile, "%s = R%i\n", assignmentStatementId, registerCount);
-    free(assignmentStatementId);
-}
-
-void Output_Postfix_Expression_To_File() {
-    fputs("*****[", codeOutputFile);
-    for(int i = 0; i < numOfItemsInPostfixContainer; ++i) {
-       fputs(postfixContainer[i], codeOutputFile);
-       if(i != numOfItemsInPostfixContainer - 1) fputc(',', codeOutputFile);
-    }
-    fputs("]*****\n", codeOutputFile);
-}
-
-void Write_Illegal_Program_Message_To_Output_File() {
-    fputs("*!*!*! Error Found In Program *!*!*!*!*!\n", codeOutputFile);
-    fputs("*!*!*! Code Generation Terminated *!*!*!\n", codeOutputFile);
-}
-
-void Reset_Postfix_Container_And_Register_Count() {
-    for(int i = 0; i < numOfItemsInPostfixContainer; ++i) {
-        free(postfixContainer[i]);
-    }
-    numOfItemsInPostfixContainer = 0;
-    registerCount = -1;
-}
-
 void Deactivate_Parser_Due_To_Error() {
     Write_Illegal_Program_Message_To_Output_File();
     if(codeOutputFile != NULL) fclose(codeOutputFile);
@@ -200,8 +141,6 @@ void Deactivate_Parser_Due_To_Error() {
 }
 
 void Deactivate_Parser() {
-    if(codeOutputFile != NULL) fclose(codeOutputFile);
-    Reset_Postfix_Container_And_Register_Count();
-    free(postfixContainer);
     Deactivate_Lexer();
+    Deactivate_Code_Generator();
 }
