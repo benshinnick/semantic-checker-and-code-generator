@@ -133,8 +133,8 @@ void Print_Found_Identifiers() {
 
 void Deactivate_Parser_Due_To_Error() {
     Write_Illegal_Program_Message_To_Output_File();
-    Deactivate_Lexer();
-    Deactivate_Code_Generator();
+    free(extractedIdLexeme);
+    Deactivate_Parser();
     Exit_Program_Due_To_Error();
 }
 
