@@ -1,7 +1,7 @@
 /*
     Student Name: Ben Shinnick
     File Name: lexical-analyzer.h
-    Assignment: COP4020 Project 1
+    Assignment: COP4020 Project 2
     Description:
      Contains functions responsible
      for extracting token types from
