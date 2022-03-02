@@ -1,7 +1,7 @@
 /*
     Student Name: Ben Shinnick
     File Name: lexical-analyzer.c
-    Assignment: COP4020 Project 1
+    Assignment: COP4020 Project 2
 */
 
 #include "lexical-analyzer.h"
@@ -12,12 +12,15 @@ void Initialize_Lexer(char* programFileName) {
     char programFilePath[INPUT_FILE_PATH_MAX_CHAR_LENGTH] = "";
     strcat(programFilePath, INPUT_FILES_DIRECTORY);
     strcat(programFilePath, programFileName);
-
-    Initialize_Symbol_Table();
+    strcat(programFilePath, ".in");
     programFile = fopen(programFilePath, "r");
+    
     lookahead = -999;
     lineNumber = 1;
     extractedIdLexeme = NULL;
+    extractedNumLexeme = -999;
+
+    Initialize_Symbol_Table();
 }
 
 int Lexan() {
@@ -35,6 +38,7 @@ int Lexan() {
         else if(isdigit(currChar)) {
             ungetc(currChar, programFile);
             int numLexeme = Extract_Num_Lexeme();
+            extractedNumLexeme = numLexeme;
             return NUM;
         }
         else if(isalpha(currChar)) {
@@ -44,12 +48,10 @@ int Lexan() {
             // printf("idLexeme = %s, %i\n", idLexeme, type);
             if(type == NOT_FOUND) {
                 if(!Is_Valid_Id(idLexeme)) {
-                    free(idLexeme);
-                    Deactivate_Lexer();
-                    Exit_Program_Due_To_Error();
+                    type = NOT_LEGAL;
                 } else type = ID;
             }
-            if(type == BEGIN || type == END || type == INT) {
+            if(type == BEGIN || type == END || type == INT || type == NOT_LEGAL) {
                 free(idLexeme);
             } else extractedIdLexeme = idLexeme;
             return type;

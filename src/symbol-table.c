@@ -1,7 +1,7 @@
 /*
     Student Name: Ben Shinnick
     File Name: symbol-table.c
-    Assignment: COP4020 Project 1
+    Assignment: COP4020 Project 2
 */
 
 #include "symbol-table.h"

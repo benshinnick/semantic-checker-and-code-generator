@@ -1,7 +1,7 @@
 /*
     Student Name: Ben Shinnick
     File Name: symbol-table.h
-    Assignment: COP4020 Project 1
+    Assignment: COP4020 Project 2
     Description:
      Contains functions responsible
      for creating and adding entries
@@ -18,7 +18,7 @@
 #include "type-constants.h"
 
 #define SYMBOL_TABLE_SIZE 100
-#define MAX_ID_CHAR_SIZE 80
+#define MAX_ID_CHAR_SIZE 50
 
 typedef struct TableEntry {
     char* value;

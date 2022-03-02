@@ -1,7 +1,7 @@
 /*
     Student Name: Ben Shinnick
     File Name: type-constants.c
-    Assignment: COP4020 Project 1
+    Assignment: COP4020 Project 2
     Description: Contains token type constants
 */
 
@@ -15,5 +15,6 @@
 #define END 401
 #define DONE 0
 #define NOT_FOUND -1
+#define NOT_LEGAL -2
 
 #endif

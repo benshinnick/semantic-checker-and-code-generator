@@ -1,7 +1,7 @@
 /*
     Student Name: Ben Shinnick
     File Name: error.h
-    Assignment: COP4020 Project 1
+    Assignment: COP4020 Project 2
     Description:
      Contains functions responsible
      for handling error operations

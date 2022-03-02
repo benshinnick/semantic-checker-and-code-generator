@@ -1,7 +1,7 @@
 /*
     Student Name: Ben Shinnick
     File Name: test.c
-    Assignment: COP4020 Project 1
+    Assignment: COP4020 Project 2
     Description:
      [not intended for submission] File I
      used to test main components of program
