@@ -15,5 +15,6 @@
 #define END 401
 #define DONE 0
 #define NOT_FOUND -1
+#define NOT_LEGAL -2
 
 #endif

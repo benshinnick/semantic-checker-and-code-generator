@@ -48,12 +48,10 @@ int Lexan() {
             // printf("idLexeme = %s, %i\n", idLexeme, type);
             if(type == NOT_FOUND) {
                 if(!Is_Valid_Id(idLexeme)) {
-                    free(idLexeme);
-                    Deactivate_Lexer();
-                    Exit_Program_Due_To_Error();
+                    type = NOT_LEGAL;
                 } else type = ID;
             }
-            if(type == BEGIN || type == END || type == INT) {
+            if(type == BEGIN || type == END || type == INT || type == NOT_LEGAL) {
                 free(idLexeme);
             } else extractedIdLexeme = idLexeme;
             return type;

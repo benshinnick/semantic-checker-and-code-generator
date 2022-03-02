@@ -61,8 +61,7 @@ void Parse_Assignment_Statement() {
     Check_Assignment_Statement_Id();
     if(lookahead != '=') {
         Print_Expected_Symbol_Message(lineNumber, '=');
-        Deactivate_Lexer();
-        Exit_Program_Due_To_Error();
+        Deactivate_Parser_Due_To_Error();
     } else {
         Match(lookahead);
         Parse_Expression();
@@ -108,9 +107,9 @@ void Match(int type) {
     if(lookahead == type) {
         lookahead = Lexan();
     } else {
+        if(lookahead == NOT_LEGAL) Deactivate_Parser_Due_To_Error();
         Print_Expected_Symbol_Message(lineNumber, type);
-        Deactivate_Lexer();
-        Exit_Program_Due_To_Error();
+        Deactivate_Parser_Due_To_Error();
     }
 }
 
@@ -119,16 +118,14 @@ void Check_Declaration_Id() {
         Add_Table_Entry(extractedIdLexeme, ID);
     } else {
         Print_Illegal_Redefinition_Message(lineNumber, extractedIdLexeme);
-        free(extractedIdLexeme);
-        Exit_Program_Due_To_Error();
+        Deactivate_Parser_Due_To_Error();
     }
 }
 
 void Check_Assignment_Statement_Id() {
     if(Lookup_Symbol_Table_Type(extractedIdLexeme) == NOT_FOUND) {
         Print_Undefined_Variable_Message(lineNumber, extractedIdLexeme);
-        free(extractedIdLexeme);
-        Exit_Program_Due_To_Error();
+        Deactivate_Parser_Due_To_Error();
     }
     else assignmentStatementId = extractedIdLexeme;;
 }
@@ -180,12 +177,26 @@ void Output_Postfix_Expression_To_File() {
     fputs("]*****\n", codeOutputFile);
 }
 
+void Write_Illegal_Program_Message_To_Output_File() {
+    fputs("*!*!*! Error Found In Program *!*!*!*!*!\n", codeOutputFile);
+    fputs("*!*!*! Code Generation Terminated *!*!*!\n", codeOutputFile);
+}
+
 void Reset_Postfix_Container_And_Register_Count() {
     for(int i = 0; i < numOfItemsInPostfixContainer; ++i) {
         free(postfixContainer[i]);
     }
     numOfItemsInPostfixContainer = 0;
     registerCount = -1;
+}
+
+void Deactivate_Parser_Due_To_Error() {
+    Write_Illegal_Program_Message_To_Output_File();
+    if(codeOutputFile != NULL) fclose(codeOutputFile);
+    Reset_Postfix_Container_And_Register_Count();
+    free(postfixContainer);
+    Deactivate_Lexer();
+    Exit_Program_Due_To_Error();
 }
 
 void Deactivate_Parser() {

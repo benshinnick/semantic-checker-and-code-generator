@@ -61,7 +61,11 @@ void Ouput_Variable_Register_Assignment_To_File();
 
 void Output_Postfix_Expression_To_File();
 
+void Write_Illegal_Program_Message_To_Output_File();
+
 void Reset_Postfix_Container_And_Register_Count();
+
+void Deactivate_Parser_Due_To_Error();
 
 void Deactivate_Parser();
 
