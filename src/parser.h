@@ -16,20 +16,10 @@
 #include <stdio.h>
 
 #include "lexical-analyzer.h"
+#include "code-generator.h"
 #include "error.h"
 
-#define OUTPUT_FILES_DIRECTORY "output-files/"
-#define OUTPUT_FILE_PATH_MAX_CHAR_LENGTH 50
-#define MAX_POSTFIX_ITEMS 25
-
 bool indecles;
-int registerCount;
-
-char* assignmentStatementId;
-char** postfixContainer;
-int numOfItemsInPostfixContainer;
-
-FILE* codeOutputFile;
 
 void Initialize_Parser(char* programFileName);
 
@@ -52,18 +42,6 @@ void Check_Declaration_Id();
 void Check_Assignment_Statement_Id();
 
 void Print_Found_Identifiers();
-
-void Output_Register_Item_To_File(int type);
-
-void Output_Register_Operation_To_File(char operator);
-
-void Ouput_Variable_Register_Assignment_To_File();
-
-void Output_Postfix_Expression_To_File();
-
-void Write_Illegal_Program_Message_To_Output_File();
-
-void Reset_Postfix_Container_And_Register_Count();
 
 void Deactivate_Parser_Due_To_Error();
 
