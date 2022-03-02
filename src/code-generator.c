@@ -35,6 +35,7 @@ void Output_Register_Operation_To_File(char operator) {
     fprintf(codeOutputFile, "R%i = R%i %c R%i\n", firstRegister, firstRegister, operator, secondRegister);
     char* strOperator = malloc(sizeof(char));
     strOperator[0] = operator;
+    strOperator[1] = '\0';
     postfixContainer[numOfItemsInPostfixContainer++] = strOperator;
 }
 
