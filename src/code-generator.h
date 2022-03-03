@@ -3,7 +3,9 @@
     File Name: code-generator.h
     Assignment: COP4020 Project 2
     Description:
-     
+     Contains functions that generates
+     the register based code and outputs
+     that code to .out files
 */
 
 #ifndef CODE_GENERATOR_H
