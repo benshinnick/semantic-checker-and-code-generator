@@ -15,7 +15,8 @@
 #include <string.h>
 #include <stdlib.h>
 
-#define OUTPUT_FILES_DIRECTORY "output-files/"
+// used a separate folder to hold output files while developing
+#define OUTPUT_FILES_DIRECTORY ""
 #define OUTPUT_FILE_PATH_MAX_CHAR_LENGTH 50
 #define MAX_POSTFIX_ITEMS 25
 #define MAX_POSTFIX_ITEM_CHAR_LENGTH 50

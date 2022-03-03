@@ -16,7 +16,8 @@
 #include "symbol-table.h"
 #include "error.h"
 
-#define INPUT_FILES_DIRECTORY "input-files/"
+// used a separate folder to hold input files while developing
+#define INPUT_FILES_DIRECTORY ""
 #define INPUT_FILE_PATH_MAX_CHAR_LENGTH 50
 
 int lookahead;
